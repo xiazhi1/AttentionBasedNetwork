@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'd:\大三\大三上\软件课设\gui\G1.ui'
+# Form implementation generated from reading ui file 'd:\大三\大三上\软件课设\GUI3输出注意力图\G1.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -21,12 +21,10 @@ import numpy as np
 import math
 import run      #连接图像识别程序
 
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
 class Ui_MainWindow(object):
-
     # 定义功能函数
     #打开文件   
     def openfile(self):
@@ -46,19 +44,23 @@ class Ui_MainWindow(object):
         
     
     def run(self):
+        def cv_imread(file_path):
+            cv_img = cv2.imdecode(np.fromfile(file_path,dtype=np.uint8),-1)
+            return cv_img
         #在此连接图像识别程序,未完成，需要图像识别软件的接口
-        a=[0]
-        run.start(a,fname)
-        if a[0]==1:
-            textOut="识别到乳腺癌！"
-        elif a[0]==0:
-            textOut="未检查出乳腺癌"
-        _translate = QtCore.QCoreApplication.translate
-        self.Output.setText(_translate("MainWindow", textOut))
+        fn=run.start(fname)
+        imgo = cv_imread(fn)  # opencv读取图片
+        reso = cv2.resize(imgo, (441, 341), interpolation=cv2.INTER_CUBIC) #用cv2.resize设置图片大小
+        self.img_oo = cv2.cvtColor(reso, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
+        _imageo = QtGui.QImage(self.img_oo[:], self.img_oo.shape[1], self.img_oo.shape[0], self.img_oo.shape[1] * 3,
+                              QtGui.QImage.Format_RGB888)  # pyqt5转换成自己能放的图片格式
+        jpg_outo = QtGui.QPixmap(_imageo)  # 转换成QPixmap
+        self.Output.setPixmap(jpg_outo)  # 设置图片显示
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.setEnabled(True)
+        MainWindow.resize(1000, 750)
         MainWindow.setMinimumSize(QtCore.QSize(1000, 750))
         MainWindow.setMaximumSize(QtCore.QSize(1900, 1000))
         MainWindow.setStyleSheet("background-color: rgb(255, 255, 255);")
@@ -74,18 +76,18 @@ class Ui_MainWindow(object):
         self.label.setAlignment(QtCore.Qt.AlignCenter)
         self.label.setObjectName("label")
         self.label_2 = QtWidgets.QLabel(self.centralwidget)
-        self.label_2.setGeometry(QtCore.QRect(850, 260, 60, 20))
+        self.label_2.setGeometry(QtCore.QRect(830, 10, 60, 20))
         font = QtGui.QFont()
         font.setFamily("微软雅黑")
         self.label_2.setFont(font)
         self.label_2.setObjectName("label_2")
         self.Input = QtWidgets.QLabel(self.centralwidget)
-        self.Input.setGeometry(QtCore.QRect(20, 30, 731, 611))
+        self.Input.setGeometry(QtCore.QRect(20, 30, 471, 421))
         self.Input.setText("")
         self.Input.setAlignment(QtCore.Qt.AlignCenter)
         self.Input.setObjectName("Input")
         self.Output = QtWidgets.QLabel(self.centralwidget)
-        self.Output.setGeometry(QtCore.QRect(770, 300, 221, 20))
+        self.Output.setGeometry(QtCore.QRect(550, 39, 441, 401))
         self.Output.setAlignment(QtCore.Qt.AlignCenter)
         self.Output.setObjectName("Output")
         self.Open = QtWidgets.QPushButton(self.centralwidget)
