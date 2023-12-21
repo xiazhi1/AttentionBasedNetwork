@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+
+.vscode/
+
+data/
+checkpoints/
+output/
+
+docker/debug.sh
+
+stock1.png
+stock2.png
+
+test.py
+test.png

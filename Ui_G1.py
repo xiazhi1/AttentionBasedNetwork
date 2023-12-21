@@ -19,8 +19,7 @@ from PyQt5.QtCore import *
 import cv2
 import numpy as np
 import math
-import run      #连接图像识别程序
-
+from network import network
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
@@ -36,7 +35,7 @@ class Ui_MainWindow(object):
         fname, imgType = QFileDialog.getOpenFileName(None, "打开图片", "", "*;;*.png;;All Files(*)") 
         img = cv_imread(fname)  # opencv读取图片
         res = cv2.resize(img, (441, 341), interpolation=cv2.INTER_CUBIC) #用cv2.resize设置图片大小
-        self.img_o = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
+        self.img_o = res # 不需要转rgb,默认BGR即可
         _image = QtGui.QImage(self.img_o[:], self.img_o.shape[1], self.img_o.shape[0], self.img_o.shape[1] * 3,
                               QtGui.QImage.Format_RGB888)  # pyqt5转换成自己能放的图片格式
         jpg_out = QtGui.QPixmap(_image)  # 转换成QPixmap
@@ -47,11 +46,11 @@ class Ui_MainWindow(object):
         def cv_imread(file_path):
             cv_img = cv2.imdecode(np.fromfile(file_path,dtype=np.uint8),-1)
             return cv_img
-        #在此连接图像识别程序,未完成，需要图像识别软件的接口
-        fn=run.start(fname)
-        imgo = cv_imread(fn)  # opencv读取图片
+        #在此连接图像识别程序
+        input_img = self.image_o
+        imgo = network(input_img) #调用模型并返回RGB图片
         reso = cv2.resize(imgo, (441, 341), interpolation=cv2.INTER_CUBIC) #用cv2.resize设置图片大小
-        self.img_oo = cv2.cvtColor(reso, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
+        self.img_oo = reso # 不需要转rgb,默认BGR即可
         _imageo = QtGui.QImage(self.img_oo[:], self.img_oo.shape[1], self.img_oo.shape[0], self.img_oo.shape[1] * 3,
                               QtGui.QImage.Format_RGB888)  # pyqt5转换成自己能放的图片格式
         jpg_outo = QtGui.QPixmap(_imageo)  # 转换成QPixmap
