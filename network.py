@@ -19,6 +19,7 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 import torchvision.models as models
 import models.imagenet as customized_models
+from PIL import Image
 from os import path
 
 from utils import Bar, Logger, AverageMeter, accuracy, mkdir_p, savefig
@@ -44,7 +45,7 @@ def network(test_image):
     parser = argparse.ArgumentParser(description='PyTorch ImageNet Training')
 
     # Datasets
-    parser.add_argument('-d', '--data', default='/home/ipad_gan/zlb/AttentionBasedNetwork/data/datasets', type=str)
+    parser.add_argument('-d', '--data', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\data\datasets', type=str)
     parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                         help='number of data loading workers (default: 4)')
     # Optimization options
@@ -68,9 +69,9 @@ def network(test_image):
     parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
                         metavar='W', help='weight decay (default: 1e-4)')
     # Checkpoints
-    parser.add_argument('-c', '--checkpoint', default='/home/ipad_gan/zlb/AttentionBasedNetwork/checkpoints/imagenet_new/resnet152', type=str, metavar='PATH',
+    parser.add_argument('-c', '--checkpoint', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoint\imagenet_denoise\resnet152', type=str, metavar='PATH',
                         help='path to save checkpoint (default: checkpoint)')
-    parser.add_argument('--resume', default='/home/ipad_gan/zlb/AttentionBasedNetwork/checkpoints/imagenet_new/resnet152/model_best.pth.tar', type=str, metavar='PATH',
+    parser.add_argument('--resume', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoint\imagenet_denoise\resnet152\model_best.pth.tar', type=str, metavar='PATH',
                         help='path to latest checkpoint (default: none)')
     # Architecture
     parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet152',
@@ -131,6 +132,17 @@ def network(test_image):
             ])),
             batch_size=args.test_batch, shuffle=False,
             num_workers=args.workers, pin_memory=True)
+        # 创建一个转换函数来同样处理测试图像
+        transform = transforms.Compose([
+            transforms.Resize(256),
+            transforms.CenterCrop(224),
+            transforms.ToTensor(),
+            normalize,  
+        ])
+        # 读取测试图像并转换称适合模型的格式
+        test_image = cv2.cvtColor(test_image, cv2.COLOR_BGR2RGB)
+        test_image = Image.fromarray(test_image)
+        test_image = transform(test_image)
 
         # create model
         if args.pretrained:
@@ -196,8 +208,8 @@ def network(test_image):
         for batch_idx, (inputs, targets) in enumerate(val_loader):
             # measure data loading time
             data_time.update(time.time() - end)
-            test_image = torch.from_numpy(test_image).float()
-            test_image = test_image.permute(2, 0, 1).unsqueeze(0)
+            # 将测试图像与添加到原本测试集输入中
+            test_image = test_image.unsqueeze(0)
             inputs = torch.cat([inputs, test_image], dim=0)
             if use_cuda:
                 inputs, targets = inputs.cuda(), targets.cuda()
@@ -229,9 +241,7 @@ def network(test_image):
                 jet_map = cv2.applyColorMap(vis_map, cv2.COLORMAP_JET)
                 jet_map = cv2.add(v_img, jet_map)
 
-                if count == 10:
-                    return jet_map
-                count += 1
+            return jet_map
 
     result_image=main(test_image)
     return result_image
