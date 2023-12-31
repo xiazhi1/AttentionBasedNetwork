@@ -81,7 +81,7 @@ class Home(QFrame):
         self.Run.clicked.connect(self.run)
 
         self.setLayout(self.gridLayout)
-#生成库页面,暂未实现
+#生成库页面,目前只预留了库的位置，但详细内容暂未实现
 class library(QFrame):
 
     def __init__(self, text: str, parent=None):
