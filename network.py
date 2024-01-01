@@ -46,7 +46,7 @@ def network(test_image):
 
     # Datasets
     parser.add_argument('-d', '--data', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\data\datasets', type=str)
-    parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
+    parser.add_argument('-j', '--workers', default=0, type=int, metavar='N',
                         help='number of data loading workers (default: 4)')
     # Optimization options
     parser.add_argument('--epochs', default=90, type=int, metavar='N',
@@ -69,9 +69,9 @@ def network(test_image):
     parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
                         metavar='W', help='weight decay (default: 1e-4)')
     # Checkpoints
-    parser.add_argument('-c', '--checkpoint', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoint\imagenet_denoise\resnet152', type=str, metavar='PATH',
+    parser.add_argument('-c', '--checkpoint', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoints\imagenet_denoise\resnet152', type=str, metavar='PATH',
                         help='path to save checkpoint (default: checkpoint)')
-    parser.add_argument('--resume', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoint\imagenet_denoise\resnet152\model_best.pth.tar', type=str, metavar='PATH',
+    parser.add_argument('--resume', default=r'D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\checkpoints\imagenet_denoise\resnet152\model_best.pth.tar', type=str, metavar='PATH',
                         help='path to latest checkpoint (default: none)')
     # Architecture
     parser.add_argument('--arch', '-a', metavar='ARCH', default='resnet152',

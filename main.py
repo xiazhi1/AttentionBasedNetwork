@@ -1,15 +1,8 @@
 # coding:utf-8
 import sys
-import cv2  
-
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
 import cv2
 import numpy as np
 import math
-
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt, QUrl,QFileInfo
 from PyQt5.QtGui import QIcon, QDesktopServices
@@ -33,8 +26,9 @@ class Home(QFrame):
         fname, imgType = QFileDialog.getOpenFileName(None, "打开图片", "", "*;;*.png;;All Files(*)") 
         img = cv_imread(fname)  # opencv读取图片
         res = cv2.resize(img, (440, 330), interpolation=cv2.INTER_CUBIC) #用cv2.resize设置图片大小
-        self.img_o = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
-        _image = QtGui.QImage(self.img_o[:], self.img_o.shape[1], self.img_o.shape[0], self.img_o.shape[1] * 3,
+        self.img_o = img #将读取的图片保存到全局变量中
+        present_img = cv2.cvtColor(res, cv2.COLOR_BGR2RGB)  # opencv读取的bgr格式图片转换成rgb格式
+        _image = QtGui.QImage(present_img[:], present_img.shape[1], present_img.shape[0], present_img.shape[1] * 3,
                               QtGui.QImage.Format_RGB888)  # pyqt5转换成自己能放的图片格式
         jpg_out = QtGui.QPixmap(_image)  # 转换成QPixmap
         self.Input.setPixmap(jpg_out)  # 设置图片显示
@@ -126,7 +120,7 @@ class Window(MSFluentWindow):
     #初始化窗口，设置名称和图标等
     def initWindow(self):
         self.resize(900, 700)
-        self.setWindowIcon(QIcon('images\TOM.png'))#设置图标
+        self.setWindowIcon(QIcon(r"D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\images\TOM.png"))#设置图标
         self.setWindowTitle('乳腺癌CT图像识别')
 
         desktop = QApplication.desktop().availableGeometry()
