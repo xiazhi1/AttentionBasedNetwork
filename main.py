@@ -75,7 +75,7 @@ class Home(QFrame):
         self.Run.clicked.connect(self.run)
 
         self.setLayout(self.gridLayout)
-#生成库页面,目前只预留了库的位置，但详细内容暂未实现
+#生成库页面由于显示历史结果,目前只预留了库的位置，详细内容正在设计
 class library(QFrame):
 
     def __init__(self, text: str, parent=None):
@@ -120,7 +120,7 @@ class Window(MSFluentWindow):
     #初始化窗口，设置名称和图标等
     def initWindow(self):
         self.resize(900, 700)
-        self.setWindowIcon(QIcon(r"D:\学习资料\大学功课\软件课设\AttentionBasedNetwork\images\TOM.png"))#设置图标
+        self.setWindowIcon(QIcon(r"images\TOM.png"))#设置图标
         self.setWindowTitle('乳腺癌CT图像识别')
 
         desktop = QApplication.desktop().availableGeometry()
@@ -141,13 +141,13 @@ class Window(MSFluentWindow):
 
 
 if __name__ == '__main__':
-    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)
-    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)
-    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)
+    QApplication.setHighDpiScaleFactorRoundingPolicy(Qt.HighDpiScaleFactorRoundingPolicy.PassThrough)#高DPI缩放
+    QApplication.setAttribute(Qt.AA_EnableHighDpiScaling)#启用缩放
+    QApplication.setAttribute(Qt.AA_UseHighDpiPixmaps)#使用高DPI像素
 
     
 
     app = QApplication(sys.argv)
     w = Window()
     w.show()
-    app.exec_()
+    app.exec_()#启用主事件循环
