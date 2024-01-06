@@ -20,7 +20,9 @@
 conda env create -f environment.yml
 ```
 
-测试运行GUI.py，即可弹出GUI窗口，请点击选取图像选取图片然后进行识别，模型会返回输入图像的注意力图
+测试运行main.py，即可弹出GUI窗口，请点击选取图像选取图片然后进行识别，模型会返回输入图像的注意力图
+
+界面示例结果如下：![](images/example.png)
 
 训练阶段运行imagenet.py，训练指令请参考[Attention_Branch_Network](https://github.com/machine-perception-robotics-group/attention_branch_network)
 
@@ -32,7 +34,8 @@ python3 imagenet.py -a resnet152 --data ../../dataset/imagenet_data/ --epochs 90
 python3 imagenet.py -a resnet152 --data ../../../../dataset/imagenet_data/ --epochs 90 --schedule 31 61 --gamma 0.1 -c checkpoints/imagenet/resnet152 --gpu-id 4,5,6 --test-batch 10 --evaluate --resume checkpoints/imagenet/resnet152/model_best.pth.tar
 ```
 
-经过验证，本模型在[cbis-ddsm](https://www.kaggle.com/datasets/awsaf49/cbis-ddsm-breast-cancer-image-dataset)数据集上对乳腺癌CT图片的分类准确率能达到62%左右，请注意这里我们对数据集进行了额外处理，将其转换为imagenet数据集格式，处理代码请参考build_dataset.py
+经过验证，本模型在[cbis-ddsm](https://www.kaggle.com/datasets/awsaf49/cbis-ddsm-breast-cancer-image-dataset)数据集上进行1000个epoch训练后对乳腺癌CT图片的分类准确率能达到69.5%左右，请注意这里我们对数据集进行了额外处理，将其转换为imagenet数据集格式，处理代码请参考build_dataset.py
+
 
 ## 参考资料
 

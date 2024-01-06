@@ -28,4 +28,5 @@ dependencies:
       - torch==1.12.0+cu113
       - torchaudio==0.12.0+cu113
       - torchvision==0.13.0+cu113
+      - pyqt-fluent-widgets==1.4.5
 prefix: /home/ipad_gan/anaconda3/envs/ABN
